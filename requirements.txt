@@ -1,0 +1,14 @@
+pymupdf>=1.24,<2
+python-docx>=1.1,<2
+Pillow>=10,<12
+pandas>=2.2,<3
+chromadb>=0.5,<1
+posthog>=3,<4
+sentence-transformers>=3,<4
+tqdm>=4.66,<5
+
+# Optional OCR support. The Tesseract binary must also be installed on the OS.
+pytesseract>=0.3.13,<1
+
+# Optional — only needed for scripts/download_data.sh
+gdown>=5,<6
