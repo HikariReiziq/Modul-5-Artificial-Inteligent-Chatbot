@@ -240,6 +240,31 @@ OCR dilakukan pada gambar yang ter-embed di PDF/DOCX:
 - [DATA_ENGINEERING.md](docs/DATA_ENGINEERING.md) — Detail teknis pipeline
 - [notebooks/01_data_processing.ipynb](notebooks/01_data_processing.ipynb) — Notebook walkthrough
 
+## Bagian RAG & Evaluasi (Orang 2 & 3)
+
+### Progres Orang 2 (Pembangunan Pipeline RAG & Sandbox)
+Orang 2 telah menyelesaikan pembangunan pipeline utama dengan pembaruan penting berikut:
+1. **Generator LLM**: Menggunakan **Gemini API (gemini-2.5-flash)**. Pembaruan ini sejalan dengan pengecualian di instruksi soal praktikum yang memperbolehkan penggunaan Gemini API. Ini memecahkan masalah koneksi/error pada HuggingFace API.
+2. **Hybrid Retrieval + Keyword Reranking**: Telah diimplementasikan pencarian hybrid untuk mengatasi kelemahan *semantic search* pada data tabel (seperti daftar mata kuliah). Sistem akan menarik 40 kandidat dokumen (`k=40`), memberikan *boost* pada dokumen yang mengandung keyword pertanyaan dan kode mata kuliah, lalu memilih 10 terbaik.
+3. **Prompt Anti-Halusinasi**: Menggunakan instruksi ketat tanpa *special tokens* eksternal untuk memaksa model menjawab "informasi tidak ditemukan" bila data tidak ada di dokumen.
+4. **Proteksi UI Sandbox**: Mencegah klik ganda pada tombol "Kirim" yang sebelumnya menyebabkan respons *output* tercetak ganda.
+
+### Menjalankan Demo Sandbox (Orang 2)
+1. Setelah database berhasil di-*index*, buka notebook: `notebooks/02_rag_pipeline_sandbox.ipynb`.
+2. Jalankan semua cell (termasuk cell paling bawah untuk menampilkan *Text Box* pertanyaan).
+3. Asisten lab bisa langsung menguji pertanyaan di kotak yang disediakan, dan sistem akan langsung menampilkan dokumen *retrieve* sebelum menjawab.
+
+### Tugas Selanjutnya untuk Orang 3 (Evaluasi & Metrik)
+Tugas Orang 3 adalah melakukan evaluasi sistematis menggunakan dataset yang sudah disediakan:
+1. Buka file **`data/banaspati_eval_questions.csv`**. Di dalamnya terdapat 10 pertanyaan khusus lengkap dengan *expected answer* dan *expected source/page*.
+2. Buat notebook baru (misal: `notebooks/03_evaluation_metrics.ipynb`).
+3. Buat skrip otomatis (*looping*) untuk mengirim ke-10 pertanyaan tersebut ke dalam sistem RAG BANASPATI.
+4. Gunakan framework **RAGAS** (atau LLM-as-a-Judge) dengan model **Gemini 1.5 Flash / Gemini 3 Flash** untuk mengevaluasi jawaban BANASPATI berdasarkan metrik:
+   - *Faithfulness* (apakah jawaban berdasarkan konteks)
+   - *Answer Relevancy* (apakah jawaban menjawab pertanyaan)
+   - *Context Precision / Recall* (apakah dokumen yang ditarik relevan)
+5. Simpan hasil evaluasi dan metrik inferensi (seperti latency dan token usage) ke dalam laporan akhir.
+
 ## License
 
 Tugas praktikum — Kecerdasan Buatan dan Pembelajaran Mesin, ITS.
