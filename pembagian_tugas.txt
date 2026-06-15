@@ -1,0 +1,19 @@
+Pilihan 1: DATA ENGINEER & DOC PROCESSOR 📊
+- Ekstraksi teks & gambar/tabel dokumen (PDF/Word jadwal, SNBT, Kurikulum, dll).
+- Eksperimen strategi pemotongan dokumen (Chunking & Overlap).
+- Membuat tagging metadata (Nama file & Halaman) untuk rujukan sumber.
+- Setup Vector Database & Embedding data.
+
+Pilihan 2: RAG PIPELINE & SANDBOX DEVELOPER 🤖
+- Membuat fungsi pencarian data (Retrieval) yang relevan berbasis Vektor.
+- Merancang instruksi prompt LLM biar akurat & ga halusinasi (Prompt Engineering).
+- Integrasi model LLM/SLM maks 9B (Coba pasang Gemini API / Local Ollama).
+- Membuat bagian "Demo Sandbox" di notebook buat tes pertanyaan dadakan dari asdos.
+
+Pilihan 3: EVALUATION, METRICS & ANALYST 📉
+- Menguji sistem pakai 10 dataset pertanyaan csv secara otomatis.
+- Implementasi metrik kualitas pakai RAGAS & LLM-as-a-Judge (Gemini 3 Flash).
+- Menghitung performa kecepatan (Latency, Throughput, Token Usage, Estimasi Biaya).
+- Menulis narasi markdown analisis alur berpikir dan hasil performa di notebook.
+
+Silakan isi polling di bawah ini ya! Kategori tugas sengaja dibagi rata biar notebook kita dapet nilai maksimal di semua parameter asdos. Terima kasih!

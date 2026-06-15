@@ -52,6 +52,7 @@ def _ocr_image(image_bytes: bytes) -> str:
     try:
         import pytesseract
         from PIL import Image, ImageEnhance
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     except ImportError:
         return ""
     try:
