@@ -4,6 +4,9 @@ import time
 import json
 import pandas as pd
 
+# Pastikan root folder ada di sys.path agar bisa import src
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Fix Windows cp1252 console encoding agar bisa cetak karakter apapun
 if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -17,7 +20,10 @@ from langchain_core.prompts import PromptTemplate
 
 from datasets import Dataset
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relevancy, context_precision, context_recall
+try:
+    from ragas.metrics.collections import faithfulness, answer_relevancy, context_precision, context_recall
+except ImportError:
+    from ragas.metrics import faithfulness, answer_relevancy, context_precision, context_recall
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.run_config import RunConfig
@@ -28,23 +34,14 @@ nest_asyncio.apply()
 # ---------------------------------------------------------
 # 1. SETUP API KEYS & MODELS
 # ---------------------------------------------------------
-KEY_1 = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY")
-KEY_2 = os.environ.get("GEMINI_API_KEY_BACKUP", KEY_1)
-
-llm1 = ChatGoogleGenerativeAI(model='gemini-2.5-flash', temperature=0.1, max_retries=0, google_api_key=KEY_1)
-llm2 = ChatGoogleGenerativeAI(model='gemini-2.5-flash', temperature=0.1, max_retries=0, google_api_key=KEY_2)
-llm = llm1.with_fallbacks([llm2])
-
-evaluator_llm = LangchainLLMWrapper(
-    ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0, google_api_key=KEY_2)
-)
-judge_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0, google_api_key=KEY_2)
+from src.banaspati_data.api_manager import get_api_manager
+llm, evaluator_llm, judge_llm = get_api_manager(eval_mode=True)
 
 # ---------------------------------------------------------
 # 2. LOAD CHROMA DB & EMBEDDINGS
 # ---------------------------------------------------------
 embed_model = HuggingFaceEmbeddings(model_name='paraphrase-multilingual-MiniLM-L12-v2')
-persist_dir = "artifacts/chroma_new"
+persist_dir = "artifacts/chroma"
 vectorstore = Chroma(persist_directory=persist_dir, collection_name='banaspati', embedding_function=embed_model)
 evaluator_embeddings = LangchainEmbeddingsWrapper(embed_model)
 
